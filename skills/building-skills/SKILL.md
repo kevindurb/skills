@@ -74,11 +74,14 @@ model: claude-sonnet-4-5-20250929   # Override model
 ## Dynamic Content
 
 ### Shell Preprocessing
-```markdown
-Current branch: !`git branch --show-current`
-PR diff: !`gh pr diff`
-```
-Commands run before content reaches Claude. Output replaces placeholder.
+
+Use `!` followed by a backtick-wrapped command. The command runs before content reaches Claude, and output replaces the placeholder.
+
+**Syntax**: `!` + `` `command` ``
+
+**Examples** (shown escaped—in real skills, write without spaces):
+- `! `git branch --show-current` ` → inserts current branch name
+- `! `gh pr diff` ` → inserts PR diff output
 
 ### Arguments
 ```markdown
