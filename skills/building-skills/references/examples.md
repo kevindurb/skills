@@ -59,7 +59,7 @@ Response includes `meta.page`, `meta.total`, `meta.hasMore`
 
 ## Workflow Skill: PR Review
 
-User-triggered workflow with side effects.
+Token-heavy analysis that runs in isolated subagent.
 
 ```yaml
 ---
@@ -67,8 +67,6 @@ name: pr-review
 description: Reviews pull requests for code quality, security issues, and
   maintainability. Use when reviewing PRs, before merging, or checking changes.
 context: fork
-agent: Explore
-disable-model-invocation: true
 allowed-tools:
   - Read
   - Grep

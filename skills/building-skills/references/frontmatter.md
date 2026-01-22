@@ -50,7 +50,9 @@ When `true`, only explicit user commands (`/skill-name`) invoke the skill. Claud
 disable-model-invocation: true
 ```
 
-**Use for**: Deployments, git pushes, sending messages, any side effects.
+**Use for**: Dangerous, irreversible operations—deployments, git pushes, deletes, sending messages.
+
+**Not for**: Token-heavy work like reviews or analysis. Use `context: fork` instead for isolation.
 
 ### user-invocable
 
@@ -102,17 +104,19 @@ allowed-tools: Read, Grep, Glob
 
 ### context
 
-Set to `fork` for isolated subagent execution.
+Set to `fork` for isolated subagent execution. **Use for token-heavy skills** like code reviews, analysis, and exploration.
 
 ```yaml
 context: fork
 ```
 
 **Effects**:
-- Skill content becomes subagent's task
-- No access to conversation history
+- Skill runs in isolated subagent, not main conversation
+- Saves main conversation context window
 - Results summarize back to main session
-- Enables focused, independent work
+- Model can still auto-invoke based on description
+
+**Use for**: Code reviews, architecture analysis, large file exploration—any skill that reads lots of code.
 
 ### agent
 
@@ -157,19 +161,6 @@ allowed-tools:
 ---
 ```
 
-### Protected Deployment
-
-```yaml
----
-name: deploy-production
-description: Deploy to production servers
-disable-model-invocation: true
-allowed-tools:
-  - Bash(git:*)
-  - Bash(docker:*)
----
-```
-
 ### Background Knowledge
 
 ```yaml
@@ -180,20 +171,31 @@ user-invocable: false
 ---
 ```
 
-### Full Workflow
+### Token-Heavy Analysis
 
 ```yaml
 ---
-name: pr-review
-description: Reviews PRs for quality, security, maintainability
+name: code-review
+description: Reviews code changes for quality, security, maintainability
 context: fork
-agent: Explore
-disable-model-invocation: true
 allowed-tools:
   - Read
   - Grep
   - Glob
-  - Bash(gh:*)
+  - Bash(git diff:*)
+---
+```
+
+### Dangerous Operations (User-Only)
+
+```yaml
+---
+name: deploy-production
+description: Deploy to production servers
+disable-model-invocation: true
+allowed-tools:
+  - Bash(git:*)
+  - Bash(docker:*)
 ---
 ```
 

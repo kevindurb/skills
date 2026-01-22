@@ -63,9 +63,9 @@ model: claude-sonnet-4-5-20250929   # Override model
 | `name` | Slash command (max 64 chars, lowercase/hyphens) | Always |
 | `description` | Helps Claude auto-invoke | Always—be trigger-rich |
 | `allowed-tools` | Restrict available tools | Read-only exploration, safety |
-| `disable-model-invocation` | Only user can invoke | Deployments, commits, side effects |
+| `disable-model-invocation` | Only user can invoke | Dangerous side effects (deploy, push) |
 | `user-invocable: false` | Hidden from menu, Claude-only | Background knowledge |
-| `context: fork` | Run in isolated subagent | Complex independent workflows |
+| `context: fork` | Run in isolated subagent | Token-heavy work (reviews, analysis) |
 | `agent` | Subagent type (Explore, Plan) | With `context: fork` |
 | `model` | Override model used | When specific model needed |
 
@@ -108,18 +108,19 @@ Step-by-step procedures for specific actions.
 
 ```yaml
 ---
-name: deploy
-description: Deploy to production environment
-disable-model-invocation: true
+name: code-review
+description: Reviews code changes for quality and security
+context: fork
 allowed-tools:
-  - Bash(git:*)
-  - Bash(gh:*)
+  - Read
+  - Grep
+  - Bash(git diff:*)
 ---
 ```
 
-- Deployments, code generation, testing
-- Often `disable-model-invocation: true` for side effects
-- May use `context: fork` for isolation
+- Reviews, analysis, code generation, testing
+- Use `context: fork` for token-heavy work (runs in subagent)
+- Use `disable-model-invocation: true` only for dangerous side effects (deploy, push)
 
 ---
 
@@ -149,9 +150,10 @@ description: Helps with documents
 | Want | Set |
 |------|-----|
 | Both user and Claude can invoke | (default) |
-| User only (side effects) | `disable-model-invocation: true` |
-| Claude only (background) | `user-invocable: false` |
-| Neither auto-invokes | Both flags true |
+| User only (dangerous side effects) | `disable-model-invocation: true` |
+| Claude only (background knowledge) | `user-invocable: false` |
+| Run in isolated subagent | `context: fork` |
+| Combine: user-only + isolated | Both `disable-model-invocation: true` and `context: fork` |
 
 ---
 
@@ -205,7 +207,8 @@ Claude loads full SKILL.md when activated—conciseness impacts token efficiency
 |---------|-----|
 | Vague description | Add specific triggers, file types, verbs |
 | Over 500 lines | Move detail to `references/` |
-| Missing `disable-model-invocation` on side effects | Add flag for deploys, commits, pushes |
+| Missing `context: fork` on token-heavy skills | Add for reviews, analysis, exploration |
+| Missing `disable-model-invocation` on dangerous actions | Add for deploy, push, delete operations |
 | Windows paths (`\`) | Use forward slashes (`/`) |
 | Assuming tools installed | Document dependencies |
 | Time-sensitive content | Remove dates, "currently" |
@@ -218,7 +221,8 @@ Claude loads full SKILL.md when activated—conciseness impacts token efficiency
 - [ ] `name` field is lowercase with hyphens
 - [ ] `description` is trigger-rich (what + when + specifics)
 - [ ] SKILL.md under 500 lines
-- [ ] Side-effect skills have `disable-model-invocation: true`
+- [ ] Token-heavy skills use `context: fork` for isolation
+- [ ] Dangerous side-effect skills have `disable-model-invocation: true`
 - [ ] `allowed-tools` restricts capabilities appropriately
 - [ ] References in separate files, not inline
 - [ ] No time-sensitive information

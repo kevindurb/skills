@@ -41,8 +41,7 @@ Each subdirectory under `skills/` is a complete skill. Directory name becomes th
 - Skills are documentation for agents—invoke `writing-documents` first
 
 ### code-review
-- **Agent fork**: Runs in isolated context to save tokens in main conversation
-- **User-invoked only**: `disable-model-invocation: true` (explicit trigger)
+- **Agent fork**: Runs in isolated context via `context: fork` to save tokens in main conversation
 - **Output for humans**: Review is a findings document—invokes `writing-documents`
 - **Priority order**: Correctness > Security > Architecture > Performance > Tests > Style
 
