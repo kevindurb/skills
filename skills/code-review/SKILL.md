@@ -67,13 +67,30 @@ For each file changed:
 3. **Verify error handling** — Are exceptions caught and handled correctly?
 4. **Look for security issues** — See `references/security-checklist.md`
 
-### 3. Assess Architecture
+### 3. Check for Reuse Opportunities
+
+New code often duplicates existing utilities. Actively search the codebase:
+
+- **Search for similar function names** — Does a helper already exist?
+- **Check common directories** — `utils/`, `helpers/`, `lib/`, `common/`, `shared/`
+- **Look for patterns in nearby files** — How do similar features solve this?
+- **Review imports in related files** — What utilities do they use?
+
+```bash
+# Example searches to find existing utilities
+git grep -l "function.*format" -- "*.ts"  # formatting helpers
+git grep -l "validate" -- "**/utils/**"   # validation utilities
+```
+
+If existing utilities could replace new code, flag it. Consistency > novelty.
+
+### 4. Assess Architecture
 
 - Does this change fit existing patterns?
 - Are abstractions at the right level?
 - Will this be easy to modify later?
 
-### 4. Verify Tests
+### 5. Verify Tests
 
 - Are new code paths tested?
 - Do tests assert meaningful behavior?
@@ -191,6 +208,13 @@ Structure for scannability:
 - Resources opened but not closed
 - Catch blocks that swallow exceptions silently
 - Tests without assertions
+
+## Yellow Flags (Flag as Consider)
+
+- New utility that duplicates existing helper
+- Pattern differs from how nearby code solves same problem
+- Reimplemented logic available in project dependencies
+- New abstraction when existing one could be extended
 
 ---
 
