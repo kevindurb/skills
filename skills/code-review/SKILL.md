@@ -16,6 +16,21 @@ allowed-tools:
 
 # Code Review
 
+> **IMPORTANT: Run as Sub-Agent**
+>
+> This skill should be invoked via the **Task tool** as a sub-agent, NOT in the main conversation.
+>
+> **Why**: Code reviews consume significant tokens reading diffs and analyzing code. Running in the main conversation wastes context window on review artifacts the user doesn't need to see. The sub-agent performs the review, then returns only the summary.
+>
+> **How to invoke**:
+> ```
+> Task tool with:
+>   subagent_type: "general-purpose"
+>   prompt: "Invoke the personal-skills:code-review skill and review [target]. Return the review summary."
+> ```
+
+---
+
 **First**: Invoke the `writing-documents` skill. Your review output is a findings document for human readers.
 
 ---
@@ -222,6 +237,15 @@ Structure for scannability:
 For detailed checklists:
 - `references/security-checklist.md` — OWASP-aligned security review
 - `references/review-areas.md` — Detailed checks by priority area
+
+---
+
+## After Completing Review
+
+When returning your review to the main conversation, recommend invoking the `review-responder` skill to process your findings. This skill walks through each issue one-by-one with the user and handles applying fixes.
+
+**Include in your response:**
+> To address these findings, invoke the `personal-skills:review-responder` skill with this review.
 
 ---
 
