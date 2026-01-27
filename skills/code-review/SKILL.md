@@ -18,14 +18,14 @@ allowed-tools:
 
 > **IMPORTANT: Run as Sub-Agent**
 >
-> This skill should be invoked via the **Task tool** as a sub-agent, NOT in the main conversation.
+> This skill should be invoked via the **Task tool** using the **`personal-skills:general-purpose`** agent, NOT in the main conversation.
 >
 > **Why**: Code reviews consume significant tokens reading diffs and analyzing code. Running in the main conversation wastes context window on review artifacts the user doesn't need to see. The sub-agent performs the review, then returns only the summary.
 >
 > **How to invoke**:
 > ```
 > Task tool with:
->   subagent_type: "general-purpose"
+>   subagent_type: "personal-skills:general-purpose"
 >   prompt: "Invoke the personal-skills:code-review skill and review [target]. Return the review summary."
 > ```
 
