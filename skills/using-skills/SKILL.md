@@ -16,7 +16,7 @@ Before starting any task, check your available skills. Skills encode proven prac
 | `writing-code` | Writing functions, classes, scripts, fixes, features, tests | Correctness > readability > simplicity |
 | `writing-documents` | Writing READMEs, guides, designs, plans, runbooks, any docs | Wrong info worse than missing info |
 | `building-skills` | Creating or improving Claude Code skills | Skills are agent docs—invokes `writing-documents` |
-| `code-review` | Reviewing PRs, commits, or staged changes | Runs as `context: fork` to save tokens |
+| `code-review` | Reviewing PRs, commits, or staged changes | Run via **Task tool** to save tokens |
 | `review-responder` | Processing review feedback (GitHub comments, code-review output) | Walks through changes one-by-one |
 
 ---

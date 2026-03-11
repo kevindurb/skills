@@ -1,17 +1,6 @@
 ---
 name: code-review
 description: Reviews code changes for correctness, security, performance, and maintainability. Use when reviewing PRs, commits, or staged changes.
-context: fork
-allowed-tools:
-  - Read
-  - Glob
-  - Grep
-  - Skill
-  - Bash(git diff:*)
-  - Bash(git show:*)
-  - Bash(git log:*)
-  - Bash(gh pr diff:*)
-  - Bash(gh pr view:*)
 ---
 
 # Code Review

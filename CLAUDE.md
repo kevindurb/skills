@@ -8,7 +8,7 @@ Claude Code plugin repository for portable agent skills. Skills here are general
 |-------|---------|-------------|
 | `writing-documents` | Documentation guidance | Writing READMEs, guides, designs, plans, runbooks, any documentation |
 | `building-skills` | Skill creation | Creating or improving Claude Code skills |
-| `code-review` | Code change review | Reviewing PRs, commits, or staged changes (runs as agent fork) |
+| `code-review` | Code change review | Reviewing PRs, commits, or staged changes (run via Task agent) |
 
 ## Repository Structure
 
@@ -17,9 +17,11 @@ skills/
 ├── [skill-name]/
 │   ├── SKILL.md           # Required: main instructions
 │   └── references/        # Optional: detailed guidance
+agents/
+├── [agent-name].md        # Optional: Task agent definitions
 ```
 
-Each subdirectory under `skills/` is a complete skill. Directory name becomes the skill identifier.
+Each subdirectory under `skills/` is a complete skill. Directory name becomes the skill identifier. Files under `agents/` register Task agent types.
 
 ## Adding Skills
 
@@ -41,7 +43,7 @@ Each subdirectory under `skills/` is a complete skill. Directory name becomes th
 - Skills are documentation for agents—invoke `writing-documents` first
 
 ### code-review
-- **Agent fork**: Runs in isolated context via `context: fork` to save tokens in main conversation
+- **Task agent**: Runs via `Task(subagent_type: "personal-skills:code-review")` to save tokens in main conversation
 - **Output for humans**: Review is a findings document—invokes `writing-documents`
 - **Priority order**: Correctness > Security > Architecture > Performance > Tests > Style
 
